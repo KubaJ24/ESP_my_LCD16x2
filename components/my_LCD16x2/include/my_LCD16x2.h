@@ -14,10 +14,15 @@
 #define RS 18
 #define RW 19
 #define E 21
-#define D4 13
+#define D0 23
+#define D1 22
+#define D2 0        //gpio 32
+#define D3 1        //gpio 33
+#define D4 25
 #define D5 27
 #define D6 26
-#define D7 14
+#define D7 16
+
 
 void my_lcd16x2_gpio_conf(void);
 /*

@@ -23,23 +23,31 @@
 #define D6 26
 #define D7 16
 
+#define CLEAR 0x01
+#define HOME 0x02
+#define DISPLAY_OFF  0x08
+#define DISPLAY_ON 0x0F
+#define CURSOR_SHIFT 0x16
+#define DISPLAY_16x2 0x20
 
 void my_lcd16x2_gpio_conf(void);
 /*
 Konfiguracja pinów
 */
 
+void my_lcd16x2_8bit_port(uint8_t data, int data_pins[]);
+
 void my_lcd16x2_data_port(uint8_t data);
 /*
 Ustawia stany D4 - D7 odpowiednio w stosunku do zmiennej "data"
 */
 
-void my_lcd16x2_print_data(uint8_t data);
+void my_lcd16x2_print_data(uint8_t data, int data_pins[]);
 /*
 Wysyła pojedyńczą daną do pamięci wyświtlacza
 */
 
-void my_lcd16x2_print_cmd(uint8_t cmd);
+void my_lcd16x2_print_cmd(uint8_t cmd, int data_pins[]);
 /*
 Wysyła pojedyńczą komendę do pamięci wyświtlacza
 */
@@ -49,25 +57,9 @@ void my_lcd16x2_print_string(char str[]);
 Wyświetla ciąg znaków zapisany w tablicy "str[]"
 */
 
-void my_lcd16x2_init(void);
+void my_lcd16x2_init(int data_pins[]);
 /*
 Podstawowa konfiguracja wyświetlacza
-*/
-
-void my_lcd16x2_set16x2(void);
-
-void my_lcd16x2_display(void);
-/*
-Display on, cursor off
-*/
-
-void my_lcd16x2_auto_inc(void);
-
-void my_lcd16x2_clear(void);
-
-void my_lcd16x2_home(void);
-/*
-Pozycja 0,0
 */
 
 #endif //MY_LCD16X2_H

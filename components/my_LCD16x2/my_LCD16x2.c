@@ -35,15 +35,8 @@ void my_lcd16x2_print_data(uint8_t data){
     REG_WRITE(GPIO_OUT_W1TS_REG, (1 << RS));
     REG_WRITE(GPIO_OUT_W1TC_REG, (1 << RW));
     REG_WRITE(GPIO_OUT_W1TS_REG, (1 << E));
-    vTaskDelay(5 / portTICK_PERIOD_MS);
+    vTaskDelay(1 / portTICK_PERIOD_MS);
     REG_WRITE(GPIO_OUT_W1TC_REG, (1 << E));
-/*     //SHIFT LEFT 
-    my_lcd16x2_data_port(data << 4);
-    REG_WRITE(GPIO_OUT_W1TS_REG, (1 << RS));
-    REG_WRITE(GPIO_OUT_W1TC_REG, (1 << RW));
-    REG_WRITE(GPIO_OUT_W1TS_REG, (1 << E));
-    vTaskDelay(5 / portTICK_PERIOD_MS);
-    REG_WRITE(GPIO_OUT_W1TC_REG, (1 << E)); */
 }
 
  void my_lcd16x2_print_cmd(uint8_t cmd){
@@ -51,15 +44,8 @@ void my_lcd16x2_print_data(uint8_t data){
     REG_WRITE(GPIO_OUT_W1TC_REG, (1 << RS));
     REG_WRITE(GPIO_OUT_W1TC_REG, (1 << RW));
     REG_WRITE(GPIO_OUT_W1TS_REG, (1 << E));
-    vTaskDelay(5 / portTICK_PERIOD_MS);
+    vTaskDelay(1 / portTICK_PERIOD_MS);
     REG_WRITE(GPIO_OUT_W1TC_REG, (1 << E));
-/*     //SHIFT LEFT 
-    my_lcd16x2_data_port(cmd << 4);
-    REG_WRITE(GPIO_OUT_W1TC_REG, (1 << RS));
-    REG_WRITE(GPIO_OUT_W1TC_REG, (1 << RW));
-    REG_WRITE(GPIO_OUT_W1TS_REG, (1 << E));
-    vTaskDelay(5 / portTICK_PERIOD_MS);
-    REG_WRITE(GPIO_OUT_W1TC_REG, (1 << E)); */
 }
 
  void my_lcd16x2_print_string(char str[]){
@@ -74,55 +60,33 @@ void my_lcd16x2_print_data(uint8_t data){
 
 void my_lcd16x2_init(void){
 
-/*     vTaskDelay(16 / portTICK_PERIOD_MS);
-    REG_WRITE(GPIO_OUT_W1TC_REG, (1 << RS));
-    REG_WRITE(GPIO_OUT_W1TC_REG, (1 << RW));
-    REG_WRITE(GPIO_OUT_W1TS_REG, (1 << D4));
-    REG_WRITE(GPIO_OUT_W1TS_REG, (1 << D5));
-    REG_WRITE(GPIO_OUT_W1TS_REG, (1 << E));
+    vTaskDelay(15 / portTICK_PERIOD_MS);
+    
+    //#1
+    my_lcd16x2_print_cmd(0x30);
     vTaskDelay(5 / portTICK_PERIOD_MS);
-    REG_WRITE(GPIO_OUT_W1TC_REG, (1 << E));
+    //#2
+    my_lcd16x2_print_cmd(0x30);
+    vTaskDelay(1 / portTICK_PERIOD_MS);
+    //#3
+    my_lcd16x2_print_cmd(0x30);
+    vTaskDelay(1 / portTICK_PERIOD_MS);
 
-    vTaskDelay(5 / portTICK_PERIOD_MS);
-
-    REG_WRITE(GPIO_OUT_W1TS_REG, (1 << E));
-    vTaskDelay(5 / portTICK_PERIOD_MS);
-    REG_WRITE(GPIO_OUT_W1TC_REG, (1 << E));
-
-    vTaskDelay(5 / portTICK_PERIOD_MS);
-    REG_WRITE(GPIO_OUT_W1TC_REG, (1 << D4));
-    REG_WRITE(GPIO_OUT_W1TS_REG, (1 << E));
-    vTaskDelay(5 / portTICK_PERIOD_MS);
-    REG_WRITE(GPIO_OUT_W1TC_REG, (1 << E)); */
-
-    my_lcd16x2_set16x2();
-    my_lcd16x2_print_cmd(0x0F);
+    my_lcd16x2_print_cmd(LCD_16x2);
+    vTaskDelay(1 / portTICK_PERIOD_MS);
+    my_lcd16x2_print_cmd(DISPLAY_ON);
+    vTaskDelay(1 / portTICK_PERIOD_MS);
     my_lcd16x2_print_cmd(0x01);
-    my_lcd16x2_print_cmd(0x03);
-    my_lcd16x2_print_cmd(0x02);
-    // my_lcd16x2_display();
-    // my_lcd16x2_auto_inc();
-    // my_lcd16x2_clear();
-    // my_lcd16x2_home();
+    vTaskDelay(1 / portTICK_PERIOD_MS);
+    my_lcd16x2_print_cmd(CURSOR_SHIFT);
+    vTaskDelay(1 / portTICK_PERIOD_MS);
+    //Inicjalizacja zakończona
+
+    my_lcd16x2_print_cmd(DISPLAY_ON);
+    vTaskDelay(1 / portTICK_PERIOD_MS);
+    //my_lcd16x2_print_cmd(AUTO_INC);
+    vTaskDelay(1 / portTICK_PERIOD_MS);
+    my_lcd16x2_print_cmd(HOME);
+    vTaskDelay(1 / portTICK_PERIOD_MS);
 }
 
-void my_lcd16x2_set16x2(void){
-    my_lcd16x2_print_cmd(0x38);
-}
-
-void my_lcd16x2_display(void){
-    //Display on, cursor off
-    my_lcd16x2_print_cmd(0x0C);
-}
-
-void my_lcd16x2_auto_inc(void){
-    my_lcd16x2_print_cmd(0x06);
-}
-
-void my_lcd16x2_clear(void){
-    my_lcd16x2_print_cmd(0x01);
-}
-
-void my_lcd16x2_home(void){
-    my_lcd16x2_print_cmd(0x02);
-}

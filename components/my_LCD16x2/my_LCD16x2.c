@@ -32,20 +32,18 @@ void my_lcd16x2_data_port(uint8_t data){
 void my_lcd16x2_print_data(uint8_t data){
     printf("data to print: %x\n", data);
     my_lcd16x2_data_port(data);
-    REG_WRITE(GPIO_OUT_W1TS_REG, (1 << RS));
-    REG_WRITE(GPIO_OUT_W1TC_REG, (1 << RW));
-    REG_WRITE(GPIO_OUT_W1TS_REG, (1 << E));
-    vTaskDelay(1 / portTICK_PERIOD_MS);
-    REG_WRITE(GPIO_OUT_W1TC_REG, (1 << E));
+    RS_ON; RW_OFF;
+    E_ON;
+    delms(1);
+    E_OFF;
 }
 
  void my_lcd16x2_print_cmd(uint8_t cmd){
     my_lcd16x2_data_port(cmd);
-    REG_WRITE(GPIO_OUT_W1TC_REG, (1 << RS));
-    REG_WRITE(GPIO_OUT_W1TC_REG, (1 << RW));
-    REG_WRITE(GPIO_OUT_W1TS_REG, (1 << E));
-    vTaskDelay(1 / portTICK_PERIOD_MS);
-    REG_WRITE(GPIO_OUT_W1TC_REG, (1 << E));
+    RS_OFF; RW_OFF;
+    E_ON;
+    delms(1);
+    E_OFF;
 }
 
  void my_lcd16x2_print_string(char str[]){
@@ -60,33 +58,35 @@ void my_lcd16x2_print_data(uint8_t data){
 
 void my_lcd16x2_init(void){
 
-    vTaskDelay(15 / portTICK_PERIOD_MS);
+    delms(15);
     
     //#1
     my_lcd16x2_print_cmd(0x30);
-    vTaskDelay(5 / portTICK_PERIOD_MS);
+    delms(5);
     //#2
-    my_lcd16x2_print_cmd(0x30);
-    vTaskDelay(1 / portTICK_PERIOD_MS);
+    delms(1);
     //#3
     my_lcd16x2_print_cmd(0x30);
-    vTaskDelay(1 / portTICK_PERIOD_MS);
+    delms(1);
 
     my_lcd16x2_print_cmd(LCD_16x2);
-    vTaskDelay(1 / portTICK_PERIOD_MS);
+    delms(1);
     my_lcd16x2_print_cmd(DISPLAY_ON);
-    vTaskDelay(1 / portTICK_PERIOD_MS);
+    delms(1);
     my_lcd16x2_print_cmd(0x01);
-    vTaskDelay(1 / portTICK_PERIOD_MS);
+    delms(1);
     my_lcd16x2_print_cmd(CURSOR_SHIFT);
-    vTaskDelay(1 / portTICK_PERIOD_MS);
+    delms(1);
     //Inicjalizacja zakończona
 
     my_lcd16x2_print_cmd(DISPLAY_ON);
-    vTaskDelay(1 / portTICK_PERIOD_MS);
+    delms(1);
     //my_lcd16x2_print_cmd(AUTO_INC);
-    vTaskDelay(1 / portTICK_PERIOD_MS);
+    delms(1);
     my_lcd16x2_print_cmd(HOME);
-    vTaskDelay(1 / portTICK_PERIOD_MS);
+    delms(1);
 }
 
+void delms(uint16_t ms){
+    vTaskDelay(ms / portTICK_PERIOD_MS);
+}

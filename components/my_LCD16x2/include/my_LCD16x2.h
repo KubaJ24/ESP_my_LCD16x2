@@ -23,12 +23,19 @@
 #define D6 26
 #define D7 16
 
-#define CLEAR 0x01
-#define HOME 0x02
-#define AUTO_INC 0x05
-#define DISPLAY_ON 0x0F
+#define CLEAR       0x01
+#define HOME        0x02
+#define AUTO_INC    0x06
+#define DISPLAY_ON  0x0F
 #define CURSOR_SHIFT 0x16
-#define LCD_16x2 0x38
+#define LCD_16x2    0x38
+
+#define RS_ON   REG_WRITE(GPIO_OUT_W1TS_REG, (1 << RS));
+#define RS_OFF  REG_WRITE(GPIO_OUT_W1TC_REG, (1 << RS));
+#define RW_ON   REG_WRITE(GPIO_OUT_W1TS_REG, (1 << RW));
+#define RW_OFF  REG_WRITE(GPIO_OUT_W1TC_REG, (1 << RS));
+#define E_ON    REG_WRITE(GPIO_OUT_W1TS_REG, (1 << E));
+#define E_OFF   REG_WRITE(GPIO_OUT_W1TC_REG, (1 << E));
 
 
 void my_lcd16x2_gpio_conf(void);
@@ -61,5 +68,10 @@ void my_lcd16x2_init(void);
 Podstawowa konfiguracja wyświetlacza
 */
 
+void delms(uint16_t ms);
+/*
+custom delay
+ms - liczba milisekund
+*/
 
 #endif //MY_LCD16X2_H
